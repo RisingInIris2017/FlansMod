@@ -2,6 +2,7 @@ package com.flansmod.common.network;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,7 +42,10 @@ public class PacketRepairDriveable extends PacketBase
 	{
 		EnumDriveablePart part = EnumDriveablePart.getPart(shortName);
 		//Try to repair the driveable
-		FlansMod.proxy.repairDriveable(playerEntity, ((EntitySeat)playerEntity.getRidingEntity()).driveable, ((EntitySeat)playerEntity.getRidingEntity()).driveable.getDriveableData().parts.get(part));
+		Entity riding = playerEntity.getRidingEntity();
+		if (riding != null) {
+			FlansMod.proxy.repairDriveable(playerEntity, ((EntitySeat)riding).driveable, ((EntitySeat)riding).driveable.getDriveableData().parts.get(part));
+		}
 	}
 	
 	@Override

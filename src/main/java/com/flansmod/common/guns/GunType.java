@@ -478,7 +478,9 @@ public class GunType extends PaintableType implements IScope
 				}
 				else bulletSpeed = Float.parseFloat(split[1]);
 				
-				if(bulletSpeed > 3.0f)
+				// We need faster bullets
+				// if(bulletSpeed > 3.0f)
+				if(bulletSpeed > 10.0f)
 				{
 					bulletSpeed = 0.0f;
 				}

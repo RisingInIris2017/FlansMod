@@ -75,11 +75,22 @@ public class EntityBullet extends EntityShootable implements IEntityAdditionalSp
 		ticksInAir = 0;
 		this.shot = shot;
 		this.dataManager.set(BULLET_TYPE, shot.getBulletType().shortName);
-		
-		setPosition(origin.x, origin.y, origin.z);
+
 		motionX = direction.x;
 		motionY = direction.y;
 		motionZ = direction.z;
+
+		// Calculate the diff
+		float length = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
+		float normalizedX = (float)motionX / length;
+		float normalizedY = (float)motionY / length;
+		float normalizedZ = (float)motionZ / length;
+		// Diff Coefficient.
+		// The larger this coefficient is, the farther the bullet will be away from the original point.
+		float diffCoefficient = 0.75f;
+
+		// Apply the diff
+		setPosition(origin.x - normalizedX * (shot.getFireableGun().getBulletSpeed() - diffCoefficient), origin.y - normalizedY * (shot.getFireableGun().getBulletSpeed() - diffCoefficient), origin.z - normalizedZ * (shot.getFireableGun().getBulletSpeed() - diffCoefficient));
 		setArrowHeading(motionX, motionY, motionZ, shot.getFireableGun().getGunSpread() * shot.getBulletType().bulletSpread, shot.getFireableGun().getBulletSpeed());
 		
 		currentPenetratingPower = shot.getBulletType().penetratingPower;
